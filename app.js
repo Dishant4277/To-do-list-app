@@ -68,7 +68,7 @@ app.get("/", function(req, res) {
 
   Item.find({}, function(err, foundItems){
 
-    if (foundItems===0) {
+    if (!foundItems || foundItems.length===0) {
       Item.insertMany(startItems, function(err){
         if (err) {
           console.log(err);
@@ -100,11 +100,11 @@ else{
         });
         list.save();
         res.redirect("/" + customListName);
-      } else if(foundList===0){
-        List.insertOne({
-          name: customListName,
-          items: defaultItems
-        });
+      } else if(foundList.items.length===0){
+        List.updateOne({
+          name: customListName},
+          {items: defaultItems
+        },function(err){});
         res.redirect("/" + customListName);
       } else{
         //Show an existing list
