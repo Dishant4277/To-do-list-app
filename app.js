@@ -42,6 +42,20 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3];
 
+const item4 = new Item({
+  name: "My Name is Dishant Balotra"
+});
+
+const item5 = new Item({
+  name: "This is My To Do List Application"
+});
+
+const item6 = new Item({
+  name: 'Add "/your-list" at the end of url to get started.'
+});
+
+const startItems = [item4, item5, item6];
+
 const listSchema = {
   name: String,
   items: [itemsSchema]
@@ -54,8 +68,8 @@ app.get("/", function(req, res) {
 
   Item.find({}, function(err, foundItems){
 
-    if (!foundItems) {
-      Item.insertMany(defaultItems, function(err){
+    if (foundItems===0) {
+      Item.insertMany(startItems, function(err){
         if (err) {
           console.log(err);
         } else {
@@ -78,7 +92,7 @@ app.get("/:customListName", function(req, res){
 else{
   List.findOne({name: customListName}, function(err, foundList){
     if (!err){
-      if (!foundList){
+      if (!foundList ){
         //Create a new list
         const list = new List({
           name: customListName,
@@ -86,7 +100,13 @@ else{
         });
         list.save();
         res.redirect("/" + customListName);
-      } else {
+      } else if(foundList===0){
+        List.insertOne({
+          name: customListName,
+          items: defaultItems
+        });
+        res.redirect("/" + customListName);
+      } else{
         //Show an existing list
 
         res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
