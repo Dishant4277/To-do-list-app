@@ -43,11 +43,11 @@ const item3 = new Item({
 const defaultItems = [item1, item2, item3];
 
 const item4 = new Item({
-  name: "My Name is Dishant Balotra"
+  name: "My Name is Dishant Balotra."
 });
 
 const item5 = new Item({
-  name: "This is My To Do List Application"
+  name: "This is My To Do List Web App."
 });
 
 const item6 = new Item({
